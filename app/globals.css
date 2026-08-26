@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+
+  --background: #0a0b0d;
+  --surface: #131519;
+  --surface-2: #1a1d22;
+  --border: #24282f;
+  --border-soft: #1d2025;
+
+  --text-primary: #e9eaec;
+  --text-secondary: #8b929c;
+  --text-dim: #5c6169;
+
+  /* Phase colors, from power-dashboard-redesign.html — validated with
+     dataviz/scripts/validate_palette.js against this surface (CVD ΔE 12.6,
+     normal-vision 18.1, all >=3:1 contrast). They fail the tool's dark
+     lightness-band heuristic on purpose (brighter reads better on a surface
+     this dark) — do not "fix" that by dimming them.
+     ponytail: --warning is the *same hex* as --phase-s, and --alert sits at
+     CVD ΔE 2.1 from --phase-r — both by design of the mockup. Never let those
+     collide: phase color only tints numerals inside the six phase columns;
+     the PF flag is a dot in the PF column (never phase-colored); trend
+     alerts always carry a ▲/▼ glyph + text, never color alone. If real usage
+     ever confuses phase-S amber with a PF warning dot, re-step --warning —
+     don't recolor a phase. */
+  --phase-r: #ff6b5e;
+  --phase-r-bg: rgba(255, 107, 94, 0.1);
+  --phase-s: #ffb84d;
+  --phase-s-bg: rgba(255, 184, 77, 0.1);
+  --phase-t: #4ea6ff;
+  --phase-t-bg: rgba(78, 166, 255, 0.1);
+
+  --good: #35d399;
+  --warning: #ffb84d;
+  --alert: #ff5f56;
+  --grid: #1d2025;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-soft: var(--border-soft);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-dim: var(--text-dim);
+  --color-phase-r: var(--phase-r);
+  --color-phase-s: var(--phase-s);
+  --color-phase-t: var(--phase-t);
+  --color-good: var(--good);
+  --color-warning: var(--warning);
+  --color-alert: var(--alert);
+  --color-grid: var(--grid);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
 }
