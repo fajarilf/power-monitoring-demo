@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getReadings, summarize, consumption, previousRange, peakDemand, peakDemandAt } from "./data.ts";
+import { summarize, consumption, previousRange, peakDemand, peakDemandAt } from "./aggregate.ts";
+import { getReadings } from "./mock-readings.ts";
 
 test("previousRange returns an equal-length window ending the day before from", () => {
   const { from, to } = previousRange("2026-08-15", "2026-08-21"); // 7 days

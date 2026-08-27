@@ -1,13 +1,13 @@
-import type { Reading } from "@/lib/data";
+import type { Reading } from "../api/measurements.types";
 
 export type Phase = "r" | "s" | "t";
 
-export type Column = {
+export interface Column {
   key: keyof Omit<Reading, "ts">;
   label: string;
   digits: number;
   phase?: Phase;
-};
+}
 
 // Drives the table header, table cells, stat rows, and xlsx export — one
 // definition instead of the header/cell list written out three times.
@@ -38,8 +38,3 @@ export const PHASE_BG: Record<Phase, string> = {
 };
 
 export const PHASE_LABEL: Record<Phase, string> = { r: "Phase A", s: "Phase B", t: "Phase C" };
-
-export const BUTTON_PRIMARY =
-  "rounded-md px-4 py-2 text-sm font-semibold bg-phase-t text-[#04101c] hover:opacity-90";
-export const BUTTON_SECONDARY =
-  "rounded-md border border-border bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary hover:bg-border-soft";

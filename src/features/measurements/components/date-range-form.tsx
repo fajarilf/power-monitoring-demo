@@ -1,20 +1,12 @@
-import ExportButton from "@/components/ExportButton";
-import { BUTTON_PRIMARY } from "@/lib/columns";
-import type { Reading } from "@/lib/data";
+import { Button } from "@/components/ui/button";
+import { ExportButton } from "./export-button";
 
-type Stats = { avg: Omit<Reading, "ts">; max: Omit<Reading, "ts">; min: Omit<Reading, "ts"> };
-
-export default function DateRangeForm({
-  from,
-  to,
-  rows,
-  stats,
-}: {
+export interface DateRangeFormProps {
   from: string;
   to: string;
-  rows: Reading[];
-  stats: Stats;
-}) {
+}
+
+export function DateRangeForm({ from, to }: DateRangeFormProps) {
   return (
     <form className="flex flex-wrap items-end gap-4 rounded-lg border border-border bg-surface p-4">
       <div className="flex flex-col">
@@ -37,11 +29,9 @@ export default function DateRangeForm({
           className="rounded-md border border-border bg-surface-2 px-2.5 py-2 font-mono text-[13px] text-text-primary"
         />
       </div>
-      <button type="submit" className={BUTTON_PRIMARY}>
-        Apply
-      </button>
+      <Button type="submit">Apply</Button>
       <div className="ml-auto">
-        <ExportButton rows={rows} stats={stats} from={from} to={to} />
+        <ExportButton from={from} to={to} />
       </div>
     </form>
   );

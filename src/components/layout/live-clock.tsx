@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 // ponytail: renders nothing until mounted — a clock is the textbook
 // server/client hydration mismatch (server's `now` is always in the past by
 // the time the client hydrates), so skip the first render entirely.
-export default function LiveClock() {
+export function LiveClock() {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
