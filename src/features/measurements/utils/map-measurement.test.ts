@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { toReading, toDailySummary } from "./map-measurement.ts";
-import type { ApiDailyAggregate, ApiMeasurement } from "../api/measurements.types.ts";
+import { toReading, toDailySummary, toLiveReading } from "./map-measurement.ts";
+import type { ApiDailyAggregate, ApiMeasurement, MqttMeasurement } from "../api/measurements.types.ts";
 
 const sample: ApiMeasurement = {
   id: 372,
@@ -146,4 +146,23 @@ test("toDailySummary returns zeros for an empty bucket list", () => {
   assert.equal(avg.u1, 0);
   assert.equal(max.u1, 0);
   assert.equal(min.u1, 0);
+});
+
+const mqttSample: MqttMeasurement = {
+  timestamp: "2026-08-26T14:32:10.500+07:00",
+  data: {
+    voltage: { rs: 361.32, st: 360.44, tr: 356.72 },
+    current: { rs: 6.474, st: 7.084, tr: 5.983 },
+    power: { kva: 4.057, kw: 2.68, kvar: 3.046, factor: 0.6605 },
+    energy: { wp_plus_kwh: 0.0447 },
+  },
+};
+
+test("toLiveReading maps power/energy fields to the right LiveReading key", () => {
+  const r = toLiveReading(mqttSample);
+  assert.equal(r.kwh, mqttSample.data.energy.wp_plus_kwh);
+  assert.equal(r.kw, mqttSample.data.power.kw);
+  assert.equal(r.kvar, mqttSample.data.power.kvar);
+  assert.equal(r.pf, mqttSample.data.power.factor);
+  assert.equal(r.ts.getTime(), new Date(mqttSample.timestamp).getTime());
 });

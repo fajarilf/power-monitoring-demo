@@ -1,5 +1,6 @@
 import { LiveClock } from "./live-clock";
 import { ConnectionStatus } from "./connection-status";
+import { MqttStatus } from "./mqtt-status";
 
 export function AppHeader() {
   return (
@@ -16,6 +17,7 @@ export function AppHeader() {
         <div className="ml-auto flex items-center gap-5">
           <LiveClock />
           <ConnectionStatus />
+          <MqttStatus />
         </div>
       </div>
     </header>

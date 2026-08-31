@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Mono, Inter } from "next/font/google";
 import { AppHeader } from "@/components/layout/app-header";
+import { LiveReadingProvider } from "@/features/measurements";
 import Providers from "./providers";
 import "./globals.css";
 
@@ -35,8 +36,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-text-primary">
         <Providers>
-          <AppHeader />
-          <main className="mx-auto w-full max-w-6xl flex-1 px-8 py-4">{children}</main>
+          <LiveReadingProvider>
+            <AppHeader />
+            <main className="mx-auto w-full max-w-6xl flex-1 px-8 py-4">{children}</main>
+          </LiveReadingProvider>
         </Providers>
       </body>
     </html>

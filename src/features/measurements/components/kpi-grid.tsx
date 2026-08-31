@@ -1,42 +1,41 @@
+"use client";
+
 import { StatCard } from "./stat-card";
-import { TrendCard } from "./trend-card";
-import { PHASE_COLOR } from "../utils/columns";
+import { useLiveReading } from "../hooks/use-live-reading";
 import { PF_THRESHOLD } from "../utils/constants";
-import { consumption, avgPerDay, peakDemand, peakDemandAt, averagePf } from "../utils/aggregate";
-import type { DateRange, Reading } from "../api/measurements.types";
 
-export interface KpiGridProps {
-  range: DateRange;
-  rows: Reading[];
-  prevRange: DateRange;
-  prevRows: Reading[];
-}
+const STATUS_LABEL = { connecting: "connecting…", live: "live", offline: "offline" } as const;
+const STATUS_COLOR = { connecting: "var(--text-dim)", live: "var(--good)", offline: "var(--alert)" } as const;
 
-export function KpiGrid({ range, rows, prevRange, prevRows }: KpiGridProps) {
-  const kwh = consumption(rows);
-  const perDay = avgPerDay(rows, range.from, range.to);
-  const peak = peakDemand(rows);
-  const peakAt = peakDemandAt(rows);
-  const pf = averagePf(rows);
+export function KpiGrid() {
+  const { reading, status } = useLiveReading();
 
-  const prevKwh = consumption(prevRows);
-  const prevPerDay = avgPerDay(prevRows, prevRange.from, prevRange.to);
+  const statusLine = (
+    <span style={{ color: STATUS_COLOR[status] }}>
+      ● {STATUS_LABEL[status]}
+      {reading && ` · ${reading.ts.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`}
+    </span>
+  );
 
   return (
     <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-      <TrendCard label="Power Consumption" value={kwh} unit="kWh" accent={PHASE_COLOR.t} previous={prevKwh} />
-      <TrendCard label="Average / day" value={perDay} unit="kWh/day" accent={PHASE_COLOR.t} previous={prevPerDay} />
-      <StatCard label="Peak Demand" value={peak} unit="kW" accent="var(--warning)">
-        <span className="text-text-dim">
-          {peakAt
-            ? `${peakAt.getMonth() + 1}/${peakAt.getDate()} · ${peakAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-            : "—"}
-        </span>
+      <StatCard label="Energy (WP+)" value={reading?.kwh ?? 0} unit="kWh" accent="var(--phase-t)">
+        {statusLine}
       </StatCard>
-      <StatCard label="Avg Power Factor" value={pf} unit="" digits={3} accent="var(--good)">
-        <span style={{ color: pf >= PF_THRESHOLD ? "var(--good)" : "var(--warning)" }}>
-          ● {pf >= PF_THRESHOLD ? "within target" : "below target"}
-        </span>
+      <StatCard label="Active Power" value={reading?.kw ?? 0} unit="kW" accent="var(--warning)">
+        {statusLine}
+      </StatCard>
+      <StatCard label="Reactive Power" value={reading?.kvar ?? 0} unit="kvar" accent="var(--phase-s)">
+        {statusLine}
+      </StatCard>
+      <StatCard label="Power Factor" value={reading?.pf ?? 0} unit="" digits={3} accent="var(--good)">
+        {reading ? (
+          <span style={{ color: reading.pf >= PF_THRESHOLD ? "var(--good)" : "var(--warning)" }}>
+            ● {reading.pf >= PF_THRESHOLD ? "within target" : "below target"}
+          </span>
+        ) : (
+          statusLine
+        )}
       </StatCard>
     </div>
   );

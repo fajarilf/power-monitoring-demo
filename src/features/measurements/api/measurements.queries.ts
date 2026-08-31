@@ -10,10 +10,12 @@ export const measurementKeys = {
   summary: (params: GetMeasurementsParams) => [...measurementKeys.summaries(), DEVICE_ID, params] as const,
 };
 
+const REFETCH_MS = 60_000;
+
 export function useMeasurements(params: GetMeasurementsParams) {
-  return useQuery({ queryKey: measurementKeys.list(params), queryFn: () => getMeasurements(params) });
+  return useQuery({ queryKey: measurementKeys.list(params), queryFn: () => getMeasurements(params), refetchInterval: REFETCH_MS });
 }
 
 export function useMeasurementsSummary(params: GetMeasurementsParams) {
-  return useQuery({ queryKey: measurementKeys.summary(params), queryFn: () => getMeasurementsSummary(params) });
+  return useQuery({ queryKey: measurementKeys.summary(params), queryFn: () => getMeasurementsSummary(params), refetchInterval: REFETCH_MS });
 }

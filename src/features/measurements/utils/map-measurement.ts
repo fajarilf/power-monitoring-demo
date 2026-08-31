@@ -3,7 +3,15 @@
 // resolves under `node --test` with no bundler alias, keeping the mapper
 // test runnable without pulling in the API client or env config.
 
-import type { ApiDailyAggregate, ApiMeasurement, MeasurementSummary, Reading, Stats } from "../api/measurements.types";
+import type {
+  ApiDailyAggregate,
+  ApiMeasurement,
+  LiveReading,
+  MeasurementSummary,
+  MqttMeasurement,
+  Reading,
+  Stats,
+} from "../api/measurements.types";
 
 export function toReading(m: ApiMeasurement): Reading {
   return {
@@ -19,6 +27,16 @@ export function toReading(m: ApiMeasurement): Reading {
     q: m.kvar,
     pf: m.pf,
     wp: m.wpPlus,
+  };
+}
+
+export function toLiveReading(msg: MqttMeasurement): LiveReading {
+  return {
+    ts: new Date(msg.timestamp),
+    kwh: msg.data.energy.wp_plus_kwh,
+    kw: msg.data.power.kw,
+    kvar: msg.data.power.kvar,
+    pf: msg.data.power.factor,
   };
 }
 

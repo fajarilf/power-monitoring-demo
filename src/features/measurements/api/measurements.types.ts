@@ -89,3 +89,23 @@ export interface ApiDailyAggregate {
   wpPlus_Max: number;
   sampleCount: number;
 }
+
+// One MQTT message published by the meter. voltage/current are present on
+// the wire but unused by the live KPI cards.
+export interface MqttMeasurement {
+  timestamp: string;
+  data: {
+    voltage: { rs: number; st: number; tr: number };
+    current: { rs: number; st: number; tr: number };
+    power: { kva: number; kw: number; kvar: number; factor: number };
+    energy: { wp_plus_kwh: number };
+  };
+}
+
+export interface LiveReading {
+  ts: Date;
+  kwh: number;
+  kw: number;
+  kvar: number;
+  pf: number;
+}

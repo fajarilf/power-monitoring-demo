@@ -1,11 +1,4 @@
-import {
-  parseRange,
-  getReadings,
-  previousRange,
-  DateRangeForm,
-  KpiGrid,
-  LogTableContainer,
-} from "@/features/measurements";
+import { parseRange, DateRangeForm, KpiGrid, LogTableContainer } from "@/features/measurements";
 
 interface DashboardPageProps {
   searchParams: Promise<{ from?: string; to?: string }>;
@@ -13,9 +6,6 @@ interface DashboardPageProps {
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
   const { from, to } = parseRange(await searchParams);
-  const rows = getReadings(from, to);
-  const prevRange = previousRange(from, to);
-  const prevRows = getReadings(prevRange.from, prevRange.to);
 
   return (
     <div className="flex flex-col gap-5">
@@ -31,7 +21,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
       <DateRangeForm from={from} to={to} />
 
-      <KpiGrid range={{ from, to }} rows={rows} prevRange={prevRange} prevRows={prevRows} />
+      <KpiGrid />
 
       <LogTableContainer range={{ from, to }} />
     </div>

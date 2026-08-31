@@ -223,6 +223,7 @@ A client component that imports the service directly is a bug.
 - Don't add comments that restate the code.
 - Don't swallow errors with an empty catch.
 - Don't create a new top-level directory without asking.
+- Don't add plugin attribution or marker comments to generated code.
 
 ## 9. Project-specific traps
  
