@@ -1,4 +1,10 @@
-import { parseRange, DateRangeForm, KpiGrid, LogTableContainer } from "@/features/measurements";
+import {
+  parseRange,
+  DateRangeForm,
+  KpiGrid,
+  MeasurementChartsContainer,
+  LogTableContainer,
+} from "@/features/measurements";
 
 interface DashboardPageProps {
   searchParams: Promise<{ from?: string; to?: string }>;
@@ -22,6 +28,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       <DateRangeForm from={from} to={to} />
 
       <KpiGrid />
+
+      <MeasurementChartsContainer range={{ from, to }} />
 
       <LogTableContainer range={{ from, to }} />
     </div>

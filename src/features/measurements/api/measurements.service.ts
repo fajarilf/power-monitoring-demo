@@ -10,7 +10,7 @@ export async function getMeasurements({ from, to }: GetMeasurementsParams): Prom
   const data = await apiGet<ApiMeasurement[]>("/api/measurements", { deviceId: DEVICE_ID, from, to, page: 1, limit: 5000 });
   // ponytail: backend returns newest-first; table has always read oldest-first,
   // so sort here rather than reorder every consumer.
-  return data.map(toReading).sort((a, b) => a.ts.getTime() - b.ts.getTime());
+  return data.map(toReading).sort((a, b) => b.ts.getTime() - a.ts.getTime());
 }
 
 export async function getMeasurementsSummary({ from, to }: GetMeasurementsParams): Promise<MeasurementSummary> {

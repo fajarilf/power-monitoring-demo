@@ -5,6 +5,7 @@
 export { parseRange } from "./utils/date-range";
 export { DateRangeForm } from "./components/date-range-form";
 export { KpiGrid } from "./components/kpi-grid";
+export { MeasurementChartsContainer } from "./components/measurement-charts-container";
 export { LogTableContainer } from "./components/log-table-container";
 export { LiveReadingProvider, useLiveReading } from "./hooks/use-live-reading";
 export type { DateRange } from "./api/measurements.types";
